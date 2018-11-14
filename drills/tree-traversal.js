@@ -1,8 +1,8 @@
 const BinarySearchTree = require('./bst');
 
 /**
- *     15
- *   10   50
+ *      25
+ *   15   50
  *
  * in-order
  * function takes tree as parameter
@@ -37,13 +37,43 @@ function inOrder(tree, array = []) {
   return array;
 }
 
+function preOrder(tree, array = []) {
+  array.push(tree.key);
+
+  if (tree.left) {
+    preOrder(tree.left, array);
+  }
+
+  if (tree.right) {
+    preOrder(tree.right, array);
+  }
+
+  return array;
+}
+
+function postOrder(tree, array = []) {
+  if (tree.left) {
+    postOrder(tree.left, array);
+  }
+
+  if (tree.right) {
+    postOrder(tree.right, array);
+  }
+
+  array.push(tree.key);
+
+  return array;
+}
+
 function main() {
-  const data = [25, 15, 50];
+  const data = [25, 15, 50, 10, 24, 35, 70, 4, 12, 18, 31, 44, 66, 90, 22];
   const bst = new BinarySearchTree();
 
   data.forEach(value => bst.insert(value));
 
   console.log('In Order', inOrder(bst));
+  console.log('Pre Order', preOrder(bst));
+  console.log('Post Order', postOrder(bst));
   // console.log(bst);
 }
 main();

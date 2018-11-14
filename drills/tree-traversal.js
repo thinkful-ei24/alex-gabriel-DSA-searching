@@ -43,7 +43,7 @@ function main() {
 
   data.forEach(value => bst.insert(value));
 
-  console.log(inOrder(bst));
+  console.log('In Order', inOrder(bst));
   // console.log(bst);
 }
 main();

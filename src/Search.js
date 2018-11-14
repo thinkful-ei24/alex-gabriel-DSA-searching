@@ -110,6 +110,7 @@ export default class Search extends React.Component {
 
     this.state = {
       linearAttempts: 0,
+      binaryAttempts: 0,
       value: ''
     };
 
@@ -130,6 +131,35 @@ export default class Search extends React.Component {
     }
   }
 
+  binarySearch(data, targetValue, start, end, count = 0) {
+    count++;
+    console.log(count);
+
+    var start = start === undefined ? 0 : start;
+    var end = end === undefined ? data.length : end;
+
+    if (start > end) {
+      return -1;
+    }
+
+    const index = Math.floor((start + end) / 2);
+    const item = data[index];
+
+    if (item == targetValue) {
+      console.log(count);
+      this.setState({ binaryAttempts: count });
+    } else if (item < targetValue) {
+      return this.binarySearch(data, targetValue, index + 1, end, count);
+    } else if (item > targetValue) {
+      return this.binarySearch(data, targetValue, start, index - 1, count);
+    } else {
+      console.log('else');
+      this.setState({
+        binaryAttempts: `item not found after ${count} attempts`
+      });
+    }
+  }
+
   handleChange(event) {
     console.log('handling change');
     this.setState({ value: event.target.value });
@@ -138,25 +168,49 @@ export default class Search extends React.Component {
   render() {
     return (
       <div>
-        <form>
-          <label>
-            Linear
-            <input type="text" name="search" onChange={this.handleChange} />
-          </label>
+        <div>
+          <form>
+            <label>
+              Linear
+              <input type="text" name="search" onChange={this.handleChange} />
+            </label>
 
-          <button
-            type="submit"
-            onClick={event => {
-              event.preventDefault();
-              this.linearSearch(this.data, Number(this.state.value));
-            }}
-          >
-            Search
-          </button>
-          <br />
-          <br />
-          <p>Linear attempts: {this.state.linearAttempts}</p>
-        </form>
+            <button
+              type="submit"
+              onClick={event => {
+                event.preventDefault();
+                this.linearSearch(this.data, Number(this.state.value));
+              }}
+            >
+              Search
+            </button>
+            <br />
+            <br />
+            <p>Linear attempts: {this.state.linearAttempts}</p>
+          </form>
+        </div>
+        <div>
+          <form>
+            <label>
+              Binary
+              <input type="text" name="search" onChange={this.handleChange} />
+            </label>
+
+            <button
+              type="submit"
+              onClick={event => {
+                event.preventDefault();
+                this.data.sort();
+                this.binarySearch(this.data, Number(this.state.value));
+              }}
+            >
+              Search
+            </button>
+            <br />
+            <br />
+            <p>Binary attempts: {this.state.binaryAttempts}</p>
+          </form>
+        </div>
       </div>
     );
   }
